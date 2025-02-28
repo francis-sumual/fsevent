@@ -19,15 +19,11 @@ export function Navbar() {
   return (
     <header className="w-full border-b bg-background">
       <div className="container flex h-16 items-center px-4 md:px-6">
-        <Link href="#" className="flex items-center">
-          <span className="text-xl font-bold">AI</span>
-          <span className="text-blue-500 font-bold text-xl">LilyHalim</span>
+        <Link href="/" className="flex items-center">
+          <span className="text-xl font-bold">FS</span>
+          <span className="text-blue-500 font-bold text-xl">Dev</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="/" className="text-sm font-medium hover:underline underline-offset-4">
-            Home
-          </Link>
-
           <Link href="/register" className="text-sm font-medium hover:underline underline-offset-4">
             Daftar
           </Link>

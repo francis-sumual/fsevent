@@ -70,7 +70,7 @@ export default function Home() {
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-center text-sm text-muted-foreground md:text-left">
-              &copy; {new Date().getFullYear()} AILilyHalim. All rights reserved.
+              &copy; {new Date().getFullYear()} FSDev. All rights reserved.
             </p>
             <div className="flex gap-4">
               <Link href="/register" className="text-sm text-muted-foreground hover:underline">
