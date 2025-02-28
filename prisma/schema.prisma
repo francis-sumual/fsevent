@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String?
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Gathering {
+  id            String                 @id @default(cuid())
+  title         String
+  description   String?
+  location      String
+  date          DateTime
+  capacity      Int
+  isActive      Boolean                @default(true)
+  registrations GatheringRegistration[]
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+}
+
+model Member {
+  id           String                 @id @default(cuid())
+  name         String
+  email        String?                
+  phone        String?
+  address      String?
+  isActive     Boolean                @default(true)
+  groupId      String
+  group        MemberGroup            @relation(fields: [groupId], references: [id])
+  registrations GatheringRegistration[]
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+}
+
+model MemberGroup {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  isActive    Boolean   @default(true)
+  members     Member[]  // Add this relation
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model GatheringRegistration {
+  id          String    @id @default(cuid())
+  memberId    String
+  member      Member    @relation(fields: [memberId], references: [id])
+  gatheringId String
+  gathering   Gathering @relation(fields: [gatheringId], references: [id])
+  status      String    @default("registered") // registered, attended, cancelled
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([memberId, gatheringId]) // Prevent duplicate registrations
+}
+
+
+
+
+
