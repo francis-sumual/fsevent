@@ -157,14 +157,14 @@ export function MemberGroupTable({
             <PaginationItem>
               <PaginationPrevious
                 onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
+                // disabled={currentPage === 1}
               />
             </PaginationItem>
             {renderPaginationItems()}
             <PaginationItem>
               <PaginationNext
                 onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
+                // disabled={currentPage === totalPages}
               />
             </PaginationItem>
           </PaginationContent>

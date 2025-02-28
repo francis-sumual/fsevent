@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Edit, Trash2 } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Edit, Trash2 } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   Pagination,
   PaginationContent,
@@ -10,19 +10,19 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
-import { Button } from "@/components/ui/button"
-import type { User } from "@/types/user"
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
+import type { User } from "@/types/user";
 
 interface UserTableProps {
-  users: User[]
-  currentPage: number
-  pageSize: number
-  totalUsers: number
-  isLoading: boolean
-  onPageChange: (page: number) => void
-  onEdit: (user: User) => void
-  onDelete: (user: User) => void
+  users: User[];
+  currentPage: number;
+  pageSize: number;
+  totalUsers: number;
+  isLoading: boolean;
+  onPageChange: (page: number) => void;
+  onEdit: (user: User) => void;
+  onDelete: (user: User) => void;
 }
 
 export function UserTable({
@@ -35,16 +35,16 @@ export function UserTable({
   onEdit,
   onDelete,
 }: UserTableProps) {
-  const totalPages = Math.ceil(totalUsers / pageSize)
+  const totalPages = Math.ceil(totalUsers / pageSize);
 
   const renderPaginationItems = () => {
-    const items = []
-    const maxVisiblePages = 5
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
-    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+    const items = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(1, endPage - maxVisiblePages + 1)
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
     // Add first page
@@ -52,14 +52,14 @@ export function UserTable({
       items.push(
         <PaginationItem key="1">
           <PaginationLink onClick={() => onPageChange(1)}>1</PaginationLink>
-        </PaginationItem>,
-      )
+        </PaginationItem>
+      );
       if (startPage > 2) {
         items.push(
           <PaginationItem key="ellipsis1">
             <PaginationEllipsis />
-          </PaginationItem>,
-        )
+          </PaginationItem>
+        );
       }
     }
 
@@ -70,8 +70,8 @@ export function UserTable({
           <PaginationLink isActive={currentPage === i} onClick={() => onPageChange(i)}>
             {i}
           </PaginationLink>
-        </PaginationItem>,
-      )
+        </PaginationItem>
+      );
     }
 
     // Add last page
@@ -80,25 +80,25 @@ export function UserTable({
         items.push(
           <PaginationItem key="ellipsis2">
             <PaginationEllipsis />
-          </PaginationItem>,
-        )
+          </PaginationItem>
+        );
       }
       items.push(
         <PaginationItem key={totalPages}>
           <PaginationLink onClick={() => onPageChange(totalPages)}>{totalPages}</PaginationLink>
-        </PaginationItem>,
-      )
+        </PaginationItem>
+      );
     }
 
-    return items
-  }
+    return items;
+  };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-40">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -149,20 +149,19 @@ export function UserTable({
             <PaginationItem>
               <PaginationPrevious
                 onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
+                // disabled={currentPage === 1}
               />
             </PaginationItem>
             {renderPaginationItems()}
             <PaginationItem>
               <PaginationNext
                 onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
+                // disabled={currentPage === totalPages}
               />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
       )}
     </div>
-  )
+  );
 }
-
