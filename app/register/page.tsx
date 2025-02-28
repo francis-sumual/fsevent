@@ -147,25 +147,25 @@ export default function RegisterPage() {
     <div className="container mx-auto py-10">
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Gathering Registration</CardTitle>
-          <CardDescription>Register for an upcoming gathering</CardDescription>
+          <CardTitle>Form Pemdaftaran Tugas</CardTitle>
+          <CardDescription>Sistim pendaftaran tugas prodiakon/prodiakones</CardDescription>
         </CardHeader>
         <CardContent>
           {gatherings.length === 0 ? (
             <div className="text-center py-6">
               <p className="text-muted-foreground mb-4">
-                No available gatherings at the moment.
+                No available misas at the moment.
                 <br />
                 Please check back later or contact the administrator.
               </p>
               <Button variant="outline" onClick={() => router.push("/registrations")}>
-                View All Gatherings
+                View All Misas
               </Button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="gatheringId">Select Gathering</Label>
+                <Label htmlFor="gatheringId">Pilih Misa</Label>
                 <Select
                   value={formData.gatheringId}
                   onValueChange={(value) =>
@@ -177,7 +177,7 @@ export default function RegisterPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a gathering" />
+                    <SelectValue placeholder="Pilih Misa" />
                   </SelectTrigger>
                   <SelectContent>
                     {gatherings.map((gathering) => (
@@ -187,7 +187,11 @@ export default function RegisterPage() {
                           <div className="flex items-center gap-4 text-xs text-muted-foreground mt-1">
                             <div className="flex items-center gap-1">
                               <Calendar className="h-3 w-3" />
-                              {new Date(gathering.date).toLocaleDateString()}
+                              {new Intl.DateTimeFormat("id-ID", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                              }).format(new Date(gathering.date))}
                             </div>
                             <div className="flex items-center gap-1">
                               <Users className="h-3 w-3" />
@@ -212,7 +216,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="groupId">Select Group</Label>
+                <Label htmlFor="groupId">Pilih Kelompok</Label>
                 <Select
                   value={formData.groupId}
                   onValueChange={(value) =>
@@ -224,7 +228,7 @@ export default function RegisterPage() {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select your group" />
+                    <SelectValue placeholder="Pilih Kelompok Anda" />
                   </SelectTrigger>
                   <SelectContent>
                     {groups.map((group) => (
@@ -237,13 +241,13 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="memberId">Select Your Name</Label>
+                <Label htmlFor="memberId">Pilih Nama</Label>
                 <Select
                   value={formData.memberId}
                   onValueChange={(value) => setFormData((prev) => ({ ...prev, memberId: value }))}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select your name" />
+                    <SelectValue placeholder="Pilih Hanya Nama Anda" />
                   </SelectTrigger>
                   <SelectContent>
                     {members.length === 0 ? (

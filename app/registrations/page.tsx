@@ -99,12 +99,12 @@ export default function RegistrationsPage() {
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Gathering Registrations</h1>
-          <p className="text-muted-foreground">View all upcoming gatherings and their registrations.</p>
+          <h1 className="text-3xl font-bold tracking-tight">List Pendaftaran</h1>
+          <p className="text-muted-foreground">Pastikan nama anda ada dalam daftar petugas misa yang dipilih.</p>
         </div>
         <Button asChild>
           <Link href="/register">
-            Register for Gathering
+            Daftar Tugas
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </Button>
@@ -120,10 +120,14 @@ export default function RegistrationsPage() {
                   <SelectValue placeholder="Select gathering" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Gatherings</SelectItem>
+                  <SelectItem value="all">All Misa</SelectItem>
                   {gatherings.map((gathering) => (
                     <SelectItem key={gathering.id} value={gathering.id}>
-                      {gathering.title} - {new Date(gathering.date).toLocaleDateString()}
+                      {/* {gathering.title} - {new Date(gathering.date).toLocaleDateString()} */}
+                      {gathering.title} -{" "}
+                      {new Intl.DateTimeFormat("id-ID", { year: "numeric", month: "2-digit", day: "2-digit" }).format(
+                        new Date(gathering.date)
+                      )}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -134,7 +138,7 @@ export default function RegistrationsPage() {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Search members or groups..."
+                  placeholder="Cari nama atau kelompok..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9"
@@ -211,7 +215,11 @@ export default function RegistrationsPage() {
                       <div className="flex items-center gap-4 mt-1">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
-                          {new Date(gathering.date).toLocaleDateString()}
+                          {new Intl.DateTimeFormat("id-ID", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                          }).format(new Date(gathering.date))}
                         </div>
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4" />
