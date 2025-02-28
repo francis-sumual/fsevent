@@ -11,6 +11,7 @@ export const metadata = {
   title: "Registration",
   description: "Pendaftaran Tugas Misa",
 };
+export const fetchCache = "force-no-store";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
