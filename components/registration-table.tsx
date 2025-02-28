@@ -144,7 +144,7 @@ export function RegistrationTable({
                 <TableCell>{registration.gathering.title}</TableCell>
                 <TableCell>{new Date(registration.gathering.date).toLocaleDateString()}</TableCell>
                 <TableCell>
-                  <Badge variant={getStatusBadgeVariant(registration.status)}>{registration.status}</Badge>
+                  <Badge>{registration.status}</Badge>
                 </TableCell>
                 <TableCell className="text-right space-x-2">
                   <Button variant="ghost" size="icon" onClick={() => onEdit(registration)}>
@@ -168,14 +168,14 @@ export function RegistrationTable({
             <PaginationItem>
               <PaginationPrevious
                 onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
+                // disabled={currentPage === 1}
               />
             </PaginationItem>
             {renderPaginationItems()}
             <PaginationItem>
               <PaginationNext
                 onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
+                // disabled={currentPage === totalPages}
               />
             </PaginationItem>
           </PaginationContent>
