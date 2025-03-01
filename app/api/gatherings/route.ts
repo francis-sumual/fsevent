@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 // Get all gatherings (admin only) with pagination
 export async function GET(request: Request) {
@@ -57,7 +58,9 @@ export async function POST(request: Request) {
         isActive: data.isActive,
       },
     });
-
+    revalidatePath("/");
+    revalidatePath("/api/gatherings/active");
+    revalidatePath("/api/gatherings/with-registrations");
     return NextResponse.json(gathering);
   } catch (error) {
     console.error("Error creating gathering:", error);

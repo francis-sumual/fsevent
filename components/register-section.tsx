@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Calendar, Users } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Calendar, RefreshCcw, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ export function RegisterSection() {
   const router = useRouter();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [gatherings, setGatherings] = useState<GatheringWithCount[]>([]);
   const [groups, setGroups] = useState<MemberGroup[]>([]);
   const [members, setMembers] = useState<Member[]>([]);
@@ -41,44 +42,58 @@ export function RegisterSection() {
     memberId: "",
   });
 
-  useEffect(() => {
-    const fetchGatherings = async () => {
-      try {
-        const response = await fetch("/api/gatherings/active");
-        if (!response.ok) throw new Error("Failed to fetch gatherings");
-        const data = await response.json();
-        setGatherings(data.gatherings);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to load gatherings",
-          variant: "destructive",
-        });
-      }
-    };
-
-    fetchGatherings();
-  }, []);
+  const fetchGatherings = useCallback(async () => {
+    try {
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/gatherings/active?t=${timestamp}`);
+      if (!response.ok) throw new Error("Failed to fetch gatherings");
+      const data = await response.json();
+      setGatherings(data.gatherings);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load gatherings",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
 
   // Fetch active groups
-  useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        const response = await fetch("/api/member-groups/active");
-        if (!response.ok) throw new Error("Failed to fetch groups");
-        const data = await response.json();
-        setGroups(data.groups);
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to load member groups",
-          variant: "destructive",
-        });
-      }
-    };
+  const fetchGroups = useCallback(async () => {
+    try {
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/member-groups/active?t=${timestamp}`);
+      if (!response.ok) throw new Error("Failed to fetch groups");
+      const data = await response.json();
+      setGroups(data.groups);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load member groups",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
 
-    fetchGroups();
-  }, []);
+  const refreshData = useCallback(async () => {
+    setIsRefreshing(true);
+    await Promise.all([fetchGatherings(), fetchGroups()]);
+    setIsRefreshing(false);
+  }, [fetchGatherings, fetchGroups]);
+
+  // Initial data fetch
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
+
+  // Periodic refresh (every 30 seconds)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refreshData();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [refreshData]);
 
   // Fetch available members when group is selected
   useEffect(() => {
@@ -170,7 +185,20 @@ export function RegisterSection() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center justify-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Form Pendaftaran</h2>
+            <div className="flex items-center justify-center gap-2">
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Form Pendaftaran</h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={refreshData}
+                disabled={isRefreshing}
+                className="rounded-full"
+                title="Refresh available gatherings"
+              >
+                <RefreshCcw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+                <span className="sr-only">Refresh</span>
+              </Button>
+            </div>
             <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
               Jika ada masalah dalam pendaftaran atau memerlukan bantuan silahkan hubungi ketua kelompok
             </p>
@@ -303,6 +331,9 @@ export function RegisterSection() {
                   >
                     {isLoading ? "Registering..." : "Register"}
                   </Button>
+                  <p className="text-xs text-muted-foreground text-center">
+                    Don't see a gathering or group? Try refreshing the data.
+                  </p>
                 </form>
               )}
             </CardContent>

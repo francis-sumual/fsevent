@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
   try {
@@ -21,7 +22,8 @@ export async function PUT(request: Request, { params }: { params: { id: string }
         isActive: data.isActive,
       },
     });
-
+    revalidatePath("/");
+    revalidatePath("/api/member-groups/active");
     return NextResponse.json(memberGroup);
   } catch (error) {
     console.error("Error updating member group:", error);
