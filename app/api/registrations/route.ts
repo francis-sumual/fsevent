@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function GET(request: Request) {
   try {
@@ -100,7 +101,8 @@ export async function POST(request: Request) {
         gathering: true,
       },
     });
-
+    revalidatePath("/");
+    revalidatePath("/api/gatherings/with-registrations");
     return NextResponse.json(registration);
   } catch (error) {
     console.error("Error creating registration:", error);

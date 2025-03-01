@@ -1,38 +1,48 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
 
 export async function GET() {
   try {
-    const gatherings = await prisma.gathering.findMany({
-      where: {
-        isActive: true,
-        date: {
-          gte: new Date(), // Only future gatherings
+    // Use unstable_cache to cache the results with a short TTL
+    const getGatherings = async () => {
+      return await prisma.gathering.findMany({
+        where: {
+          isActive: true,
+          date: {
+            gte: new Date(),
+          },
         },
-      },
-      include: {
-        registrations: {
-          include: {
-            member: {
-              include: {
-                group: true,
+        include: {
+          registrations: {
+            include: {
+              member: {
+                include: {
+                  group: true,
+                },
               },
             },
+            orderBy: {
+              createdAt: "asc",
+            },
           },
-          orderBy: {
-            createdAt: "asc",
+          _count: {
+            select: {
+              registrations: true,
+            },
           },
         },
-        _count: {
-          select: {
-            registrations: true,
-          },
+        orderBy: {
+          date: "asc",
         },
-      },
-      orderBy: {
-        date: "asc",
-      },
-    });
+      });
+    };
+
+    const gatherings = await unstable_cache(
+      getGatherings,
+      ["gatherings-with-registrations"],
+      { revalidate: 10 } // Cache for 10 seconds
+    )();
 
     return NextResponse.json({ gatherings });
   } catch (error) {

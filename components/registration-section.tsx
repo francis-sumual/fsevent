@@ -28,7 +28,7 @@ interface GatheringWithRegistrations extends Gathering {
 }
 
 export const dynamic = "force-dynamic";
-export const revalidate = 5;
+export const revalidate = 10;
 export const fetchCache = "force-no-store";
 
 export function RegistrationsSection() {
@@ -46,7 +46,9 @@ export function RegistrationsSection() {
 
   const fetchGatherings = async () => {
     try {
-      const response = await fetch("/api/gatherings/with-registrations");
+      setIsLoading(true);
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/gatherings/with-registrations?t=${timestamp}`);
       if (!response.ok) throw new Error("Failed to fetch gatherings");
       const data = await response.json();
       setGatherings(data.gatherings);
@@ -68,8 +70,15 @@ export function RegistrationsSection() {
 
   // Listen for registration updates
   useEffect(() => {
-    const handleRegistrationUpdate = () => {
-      fetchGatherings();
+    const handleRegistrationUpdate = async () => {
+      // Add a small delay before fetching
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await fetchGatherings();
+
+      // Retry after 3 seconds to ensure we have the latest data
+      setTimeout(async () => {
+        await fetchGatherings();
+      }, 3000);
     };
 
     window.addEventListener(REGISTRATION_UPDATED, handleRegistrationUpdate);
