@@ -22,6 +22,7 @@ export default function Home() {
     // Clean up interval on unmount
     return () => clearInterval(intervalId);
   }, [router]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <section className="w-full py-12 md:py-24 lg:py-18 xl:py-24">

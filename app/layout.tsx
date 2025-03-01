@@ -5,6 +5,9 @@ import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/components/auth-provider";
 import { LoadingProvider } from "@/components/loading-provider";
+import { revalidatePath } from "next/cache";
+
+revalidatePath("/", "layout");
 
 const inter = Inter({ subsets: ["latin"] });
 
