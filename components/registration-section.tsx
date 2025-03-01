@@ -26,6 +26,8 @@ interface GatheringWithRegistrations extends Gathering {
     registrations: number;
   };
 }
+export const dynamic = "force-dynamic";
+export const revalidate = 5;
 
 export function RegistrationsSection() {
   const { toast } = useToast();
