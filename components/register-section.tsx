@@ -22,6 +22,9 @@ interface GatheringWithCount extends Gathering {
 const registrationEventEmitter = new EventTarget();
 export const REGISTRATION_UPDATED_EVENT = "registrationUpdated";
 export const REGISTRATION_UPDATED = "REGISTRATION_UPDATED";
+export const dynamic = "force-dynamic";
+export const revalidate = 5;
+export const fetchCache = "force-no-store";
 
 export function RegisterSection() {
   const router = useRouter();
