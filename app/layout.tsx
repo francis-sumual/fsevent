@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/components/auth-provider";
+import { LoadingProvider } from "@/components/loading-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          <Navbar />
-          {children}
-          <Toaster />
+          <LoadingProvider>
+            <Navbar />
+            {children}
+            <Toaster />
+          </LoadingProvider>
         </AuthProvider>
       </body>
     </html>

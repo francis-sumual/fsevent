@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -5,6 +9,19 @@ import { RegisterSection } from "@/components/register-section";
 import { RegistrationsSection } from "@/components/registration-section";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Refresh the page data when component mounts
+    router.refresh();
+
+    // Set up periodic refresh every 30 seconds
+    const intervalId = setInterval(() => {
+      router.refresh();
+    }, 30000);
+    // Clean up interval on unmount
+    return () => clearInterval(intervalId);
+  }, [router]);
   return (
     <div className="flex flex-col min-h-screen">
       <section className="w-full py-12 md:py-24 lg:py-18 xl:py-24">
@@ -78,7 +95,7 @@ export default function Home() {
             </p>
             <div className="flex gap-4">
               <Link href="#register" className="text-sm text-muted-foreground hover:underline">
-                Daftar Tugsas
+                Daftar Tugas
               </Link>
               <Link href="#registrations" className="text-sm text-muted-foreground hover:underline">
                 Lihat Pendaftaran

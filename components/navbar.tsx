@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useSession, signOut } from "next-auth/react";
+import { useLoading } from "@/components/loading-provider";
 
 export function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const isLoading = status === "loading";
+  const { isLoading } = useLoading();
   const isAuthenticated = status === "authenticated";
-
   // Don't show navbar on admin pages
   if (pathname.startsWith("/admin")) {
     return null;
@@ -32,7 +32,7 @@ export function Navbar() {
           </Link>
         </nav>
         <div className="ml-auto flex items-center gap-4">
-          {isLoading ? (
+          {status === "loading" || isLoading ? (
             <div className="h-9 w-20 animate-pulse rounded-md bg-muted"></div>
           ) : isAuthenticated ? (
             <>
