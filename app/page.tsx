@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -10,18 +10,30 @@ import { RegistrationsSection } from "@/components/registration-section";
 
 export default function Home() {
   const router = useRouter();
+  const isFirstMount = useRef(true);
+
+  const refreshData = useCallback(() => {
+    // Only refresh if it's not the first mount
+    if (!isFirstMount.current) {
+      router.refresh();
+    }
+  }, [router]);
 
   useEffect(() => {
-    // Refresh the page data when component mounts
-    router.refresh();
+    if (isFirstMount.current) {
+      // Set first mount to false after initial render
+      isFirstMount.current = false;
+      return;
+    }
 
     // Set up periodic refresh every 30 seconds
-    const intervalId = setInterval(() => {
-      router.refresh();
-    }, 30000);
+    const intervalId = setInterval(refreshData, 30000);
+
     // Clean up interval on unmount
-    return () => clearInterval(intervalId);
-  }, [router]);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [refreshData]);
 
   return (
     <div className="flex flex-col min-h-screen">
