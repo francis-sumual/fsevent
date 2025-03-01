@@ -76,8 +76,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -87,3 +85,7 @@
   }
 }
 
+/* Add this to your existing globals.css */
+html {
+  scroll-behavior: smooth;
+}

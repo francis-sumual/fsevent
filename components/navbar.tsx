@@ -24,10 +24,10 @@ export function Navbar() {
           <span className="text-blue-500 font-bold text-xl">Dev</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link href="/register" className="text-sm font-medium hover:underline underline-offset-4">
+          <Link href="#register" className="text-sm font-medium hover:underline underline-offset-4">
             Daftar
           </Link>
-          <Link href="/registrations" className="text-sm font-medium hover:underline underline-offset-4">
+          <Link href="#registrations" className="text-sm font-medium hover:underline underline-offset-4">
             Lihat Pendaftaran
           </Link>
         </nav>
@@ -52,9 +52,6 @@ export function Navbar() {
                   <p>Sign In</p>
                 </Button>
               </Link>
-              {/* <Link href="/auth/signup">
-                <Button size="sm">Sign Up</Button>
-              </Link> */}
             </>
           )}
         </div>

@@ -154,7 +154,7 @@ export function RegistrationModal({ open, onClose, registration }: RegistrationM
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="gatheringId">Gathering</Label>
+            <Label htmlFor="gatheringId">List Pendaftaran</Label>
             <Select
               value={formData.gatheringId}
               onValueChange={(value) => setFormData((prev) => ({ ...prev, gatheringId: value }))}

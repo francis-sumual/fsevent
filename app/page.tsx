@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { RegisterSection } from "@/components/register-section";
+import { RegistrationsSection } from "@/components/registration-section";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
       <section className="w-full py-12 md:py-24 lg:py-18 xl:py-24">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center space-y-4 text-center">
@@ -19,12 +20,12 @@ export default function Home() {
             </div>
 
             <div className="space-x-4">
-              <Link href="/register">
+              <Link href="#register">
                 <Button>
                   Daftar Tugas <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-              <Link href="/registrations">
+              <Link href="#registrations">
                 <Button>
                   Lihat Pendaftaran <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -65,7 +66,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
+      <RegisterSection />
+
+      <RegistrationsSection />
+
       <footer className="w-full border-t bg-background  px-10">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
@@ -73,10 +77,10 @@ export default function Home() {
               &copy; {new Date().getFullYear()} FSDev. All rights reserved.
             </p>
             <div className="flex gap-4">
-              <Link href="/register" className="text-sm text-muted-foreground hover:underline">
+              <Link href="#register" className="text-sm text-muted-foreground hover:underline">
                 Daftar Tugsas
               </Link>
-              <Link href="/registrations" className="text-sm text-muted-foreground hover:underline">
+              <Link href="#registrations" className="text-sm text-muted-foreground hover:underline">
                 Lihat Pendaftaran
               </Link>
             </div>
